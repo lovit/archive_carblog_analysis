@@ -1,6 +1,14 @@
 import sys
 sys.path.append('../')
-import carblog_analyzer
 
+import carblog_analyzer
 print('Available carblog_analyzer == {}'.format(carblog_analyzer.__version__))
 
+import os
+carblog_dataset_path = '/mnt/sdc2/carblog_dataset/'
+if os.path.exists(carblog_dataset_path):
+    sys.path.append(carblog_dataset_path)
+    print('Available carblog_dataset')
+else:
+    print('Check your carblog dataset or "git clone https://github.com/lovit/carblog_dataset.git"')
+    print('After cloning, you must install the dataset. See more carblog_dataset README')
