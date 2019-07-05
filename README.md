@@ -46,5 +46,6 @@ category 26: 현대차
 
 여러 접근법들의 코드를 순차적으로 올릴 계획입니다. 한 접근법에 대한 코드가 정리되면 위의 `latest update` 에 마지막 날짜를 업데이트 하겠습니다.
 
+`tutorials` 폴더의 `config.py` 파일에는 [carblog dataset][carblog dataset] 데이터셋의 설치 위치가 저장되어 있습니다. 각자의 환경에 맞춰 path 를 변경하신 후 이용하시기 바랍니다.
 
 [carblog dataset]: https://github.com/lovit/carblog_dataset
