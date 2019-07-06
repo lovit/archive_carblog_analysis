@@ -1,6 +1,6 @@
 ## Carblog dataset analysis
 
-`latest update`: 2019. 7. 5
+`last update`: 2019. 7. 5
 
 이 분석 예시는 [carblog dataset][carblog dataset] 을 이용합니다. 데이터를 이용할 수 있는 파이썬 코드는 git clone 을 하면 이용할 수 있으며, 실제 데이터는 fetch 함수를 이용하여 다운로드 받아야 합니다. 자세한 사용법은 해당 데이터셋의 README 를 참고하세요.
 
@@ -44,7 +44,7 @@ category 26: 현대차
 
 즉 unsupervised spam filtering 을 수행해야 합니다. 이 repository 는 [carblog dataset][carblog dataset] 에서 자동차와 관련되지 않은 포스트들을 제거하는 효율적인 방법들이 포함되어 있습니다.
 
-여러 접근법들의 코드를 순차적으로 올릴 계획입니다. 한 접근법에 대한 코드가 정리되면 위의 `latest update` 에 마지막 날짜를 업데이트 하겠습니다.
+여러 접근법들의 코드를 순차적으로 올릴 계획입니다. 한 접근법에 대한 코드가 정리되면 위의 `last update` 에 마지막 날짜를 업데이트 하겠습니다.
 
 `tutorials` 폴더의 `config.py` 파일에는 [carblog dataset][carblog dataset] 데이터셋의 설치 위치가 저장되어 있습니다. 각자의 환경에 맞춰 path 를 변경하신 후 이용하시기 바랍니다.
 
