@@ -37,6 +37,8 @@ def compute_document_frequency(documents, subword_to_idx):
 
 def train_subword_df_distribution(subword_to_idx, verbose=False):
     """
+    It shows distribution of document frequency ratio by categories.
+
     Arguments
     ---------
     subword_to_idx : {str:int}
@@ -62,14 +64,10 @@ def train_subword_df_distribution(subword_to_idx, verbose=False):
     df_ratios = np.vstack(df_ratios)
     return df_ratios
 
-def show_df_distribution(subword, subword_to_idx, df_ratios, idx_to_category):
+class DFDistributionPrinter:
     """
-    It shows distribution of document frequency ratio by categories
-
     Arguments
     ---------
-    subword : str
-        Input subword
     subword_to_idx : {str:int}
         Mapper, subword to index
     df_ratios : numpy.ndarray
@@ -77,52 +75,73 @@ def show_df_distribution(subword, subword_to_idx, df_ratios, idx_to_category):
     idx_to_category : list of str
         List of category names
 
-    Usage
-    -----
-        >>> show_df_distribution('터미네이터', subword_to_idx, df_ratios, idx_to_category)
+    Usage code
 
-        $ Subword = 터미네이터
-          [--------------------]: (0.022 %)	 A6
-          [--------------------]: (0.051 %)	 BMW5
-          [--------------------]: (0.038 %)	 BMW
-          [--------------------]: (0.013 %)	 K3
-          [--------------------]: (0.015 %)	 K5
-          [--------------------]: (0.012 %)	 K7
-          [--------------------]: (0.008 %)	 QM3
-          [--------------------]: (0.011 %)	 그랜저
-          [--------------------]: (0.039 %)	 벤츠E
-          [--------------------]: (0.028 %)	 산타페
-          [--------------------]: (0.027 %)	 소나타
-          [--------------------]: (0.012 %)	 스포티지
-          [--------------------]: (0.011 %)	 싼타페
-          [--------------------]: (0.009 %)	 쏘나타
-          [--------------------]: (0.010 %)	 쏘렌토
-          [--------------------]: (0.011 %)	 아반떼
-          [--------------------]: (0.000 %)	 아반테
-          [####################]: (1.775 %)	 제네시스
-          [--------------------]: (0.008 %)	 코란도C
-          [--------------------]: (0.011 %)	 투싼
-          [--------------------]: (0.015 %)	 티구안
-          [--------------------]: (0.018 %)	 티볼리
-          [--------------------]: (0.000 %)	 파사트
-          [--------------------]: (0.008 %)	 폭스바겐골프
-          [--------------------]: (0.067 %)	 현기차
-          [--------------------]: (0.017 %)	 현대자동차
-          [--------------------]: (0.027 %)	 현대차
+        >>> df_distribution = DFDistributionPrinter(subword_to_idx, df_ratios, idx_to_category)
+        >>> df_distribution('터미네이터')
     """
-    def bar_str(df_i):
-        bar_len = int(20 * df_i)
-        return '#' * bar_len + '-' * (20 - bar_len)
+    def __init__(self, subword_to_idx, df_ratios, idx_to_category):
+        self.subword_to_idx = subword_to_idx
+        self.df_ratios = df_ratios
+        self.idx_to_category = idx_to_category
 
-    subword_idx = subword_to_idx.get(subword, -1)
-    if subword_idx == -1:
-        return
-    df = df_ratios[:,subword_idx].reshape(-1)
-    bars = df / df.max()
+    def __call__(self, subword):
+        return self.show(subword)
 
-    print('Subword = {}'.format(subword))
-    for i, (df_i, bar_i) in enumerate(zip(df, bars)):
-        category = idx_to_category[i]
-        perc = '%.3f' % (100 * df_i)
-        bar = bar_str(bar_i)
-        print('[{}]: ({} %)\t {}'.format(bar, perc, category))
+    def show(self, subword):
+        """
+        Arguments
+        ---------
+        subword : str
+            Input subword
+
+        Usage
+        -----
+            >>> df_distribution = DFDistributionPrinter(subword_to_idx, df_ratios, idx_to_category)
+            >>> df_distribution('터미네이터')
+
+            $ Subword = 터미네이터
+              [--------------------]: (0.022 %)	 A6
+              [--------------------]: (0.051 %)	 BMW5
+              [--------------------]: (0.038 %)	 BMW
+              [--------------------]: (0.013 %)	 K3
+              [--------------------]: (0.015 %)	 K5
+              [--------------------]: (0.012 %)	 K7
+              [--------------------]: (0.008 %)	 QM3
+              [--------------------]: (0.011 %)	 그랜저
+              [--------------------]: (0.039 %)	 벤츠E
+              [--------------------]: (0.028 %)	 산타페
+              [--------------------]: (0.027 %)	 소나타
+              [--------------------]: (0.012 %)	 스포티지
+              [--------------------]: (0.011 %)	 싼타페
+              [--------------------]: (0.009 %)	 쏘나타
+              [--------------------]: (0.010 %)	 쏘렌토
+              [--------------------]: (0.011 %)	 아반떼
+              [--------------------]: (0.000 %)	 아반테
+              [####################]: (1.775 %)	 제네시스
+              [--------------------]: (0.008 %)	 코란도C
+              [--------------------]: (0.011 %)	 투싼
+              [--------------------]: (0.015 %)	 티구안
+              [--------------------]: (0.018 %)	 티볼리
+              [--------------------]: (0.000 %)	 파사트
+              [--------------------]: (0.008 %)	 폭스바겐골프
+              [--------------------]: (0.067 %)	 현기차
+              [--------------------]: (0.017 %)	 현대자동차
+              [--------------------]: (0.027 %)	 현대차
+        """
+        def bar_str(df_i):
+            bar_len = int(20 * df_i)
+            return '#' * bar_len + '-' * (20 - bar_len)
+
+        subword_idx = subword_to_idx.get(subword, -1)
+        if subword_idx == -1:
+            return
+        df = df_ratios[:,subword_idx].reshape(-1)
+        bars = df / df.max()
+
+        print('Subword = {}'.format(subword))
+        for i, (df_i, bar_i) in enumerate(zip(df, bars)):
+            category = idx_to_category[i]
+            perc = '%.3f' % (100 * df_i)
+            bar = bar_str(bar_i)
+            print('[{}]: ({} %)\t {}'.format(bar, perc, category))
