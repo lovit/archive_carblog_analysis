@@ -9,8 +9,10 @@ except:
 
 from . import dictionary
 from . import tokenizer
+from .utils import check_dir
 
 __all__ = [
     'dictionary',
-    'tokenizer'
+    'tokenizer',
+    'check_dir'
 ]
