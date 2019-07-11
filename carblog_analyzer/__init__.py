@@ -7,4 +7,10 @@ try:
 except:
     print('First install soynlp using "pip install soynlp" or "git clone https://github.com/lovit/soynlp.git"')
 
+from . import dictionary
 from . import tokenizer
+
+__all__ = [
+    'dictionary',
+    'tokenizer'
+]
