@@ -133,15 +133,15 @@ class DFDistributionPrinter:
             bar_len = int(20 * df_i)
             return '#' * bar_len + '-' * (20 - bar_len)
 
-        subword_idx = subword_to_idx.get(subword, -1)
+        subword_idx = self.subword_to_idx.get(subword, -1)
         if subword_idx == -1:
             return
-        df = df_ratios[:,subword_idx].reshape(-1)
+        df = self.df_ratios[:,subword_idx].reshape(-1)
         bars = df / df.max()
 
         print('Subword = {}'.format(subword))
         for i, (df_i, bar_i) in enumerate(zip(df, bars)):
-            category = idx_to_category[i]
+            category = self.idx_to_category[i]
             perc = '%.3f' % (100 * df_i)
             bar = bar_str(bar_i)
             print('[{}]: ({} %)\t {}'.format(bar, perc, category))
