@@ -1,6 +1,8 @@
 from collections import Counter
 from collections import defaultdict
+from carblog_dataset import load_text, load_category_index
 from soynlp.normalizer import normalize
+
 
 class SubwordTokenizer:
     """
@@ -154,3 +156,48 @@ def word_score_by_droprate(documents, min_count=50):
     droprates = train_droprate(counter)
     word_scores = droprate_to_word_score(droprates)
     return word_scores
+
+def train_vocabulary_index(min_count=50, min_droprate_wordscore=0.1, verbose=False):
+    """
+    It extracts subwords from all categories
+
+    Arguments
+    ---------
+    min_count : int
+        Minimum frequency of extracted subwords
+    min_droprate_wordscore : float
+        Minimum word score
+    verbose : Boolean
+        If True, it shows progress
+
+    Returns
+    -------
+    idx_to_subword : list of str
+        Subword list
+    subword_to_idx : dictionary, {str:int}
+        Mapper; subword to index
+
+    Usage
+    -----
+        >>> min_count = 50
+        >>> min_droprate_wordscore = 0.1
+        >>> verbose = False
+        >>> idx_to_subword, subword_to_idx = train_vocabulary_index(min_count, min_droprate_wordscore, verbose)
+    """
+    idx_to_category = load_category_index()
+    num_categories = len(idx_to_category)
+
+    subword_dictionary = set()
+    for c in range(num_categories):
+        texts = load_text(category=c)
+        word_scores = word_score_by_droprate(texts, min_count=min_count)
+        word_scores = {w:s for w,s in word_scores.items() if s >= min_droprate_wordscore}
+        subword_dictionary.update(word_scores)
+
+        if verbose:
+            args = (len(word_scores), idx_to_category[c], len(subword_dictionary))
+            print('Extract {} subwords from [{}] category. Num of all subwords = {}'.format(*args))
+
+    idx_to_subword = sorted(subword_dictionary)
+    subword_to_idx = {sub:idx for idx, sub in enumerate(idx_to_subword)}
+    return idx_to_subword, subword_to_idx
