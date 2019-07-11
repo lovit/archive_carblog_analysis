@@ -12,3 +12,8 @@ if os.path.exists(carblog_dataset_path):
 else:
     print('Check your carblog dataset or "git clone https://github.com/lovit/carblog_dataset.git"')
     print('After cloning, you must install the dataset. See more carblog_dataset README')
+
+exp_name = 'demo_0'
+model_dir = '/mnt/sdc2/carblog_analysis/{}/'.format(exp_name)
+if not os.path.exists(model_dir):
+    os.makedirs(model_dir)
